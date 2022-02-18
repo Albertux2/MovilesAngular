@@ -1,0 +1,27 @@
+.divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.sidenav {
+  width: 20vw;
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#antutu{
+  background-color: beige;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.button{
+  width:65%;
+  white-space: normal;
+}

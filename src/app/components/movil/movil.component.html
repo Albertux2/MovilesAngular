@@ -1,0 +1,31 @@
+<div class="container">
+  <div style="width: 100%">
+    <mat-form-field id="search" class="example-form-field" appearance="fill" class="inputContainer" color="warn">
+      <mat-label>Marca/Modelo</mat-label>
+      <input matInput type="text" #text
+      (keyup)="getBusqueda(text.value)" >
+      <button *ngIf="text.value" matSuffix mat-icon-button aria-label="Clear" (click)="text.value='';getBusqueda(text.value)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <br />
+  <div *ngIf="lista">
+    <div id="movilDiv" class="movilDiv">
+      <mat-card id="{{ movil.id }}" class="cardC" (click)="onCardClick($event)" *ngFor="let movil of moviles">
+        <mat-card-title>{{movil.marca}} {{movil.modelo}}</mat-card-title>
+        <img mat-card-image src="https://i.blogs.es/cdf0c8/img_9077/450_1000.jpg">
+        <mat-card-subtitle style="margin-bottom: 5px;">Precio: {{movil.precio}}€ RAM: {{movil.ram.memoria}}</mat-card-subtitle>
+        <mat-card-actions class="test">
+          <button mat-mini-fab color="cart" aria-label="Example icon button with a plus one icon">
+            <mat-icon class="icon">add_shopping_cart_icon</mat-icon>
+          </button>
+          <button mat-mini-fab color="compare" aria-label="Example icon button with a plus one icon">
+            <mat-icon>compare</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <mat-paginator [hidePageSize]="true" [pageIndex]="pageNumber" [length]="totalElementsPage" [pageSize]="8" (page)="changePage($event)" class="paginator"></mat-paginator>
+</div>

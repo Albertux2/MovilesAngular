@@ -1,0 +1,86 @@
+h4 {
+  width: 50%;
+  background-color: aquamarine;
+  text-align: center;
+  margin: 10px 0px;
+}
+
+mat-card img {
+  object-fit: cover; /*this makes the image in src fit to the size specified below*/
+  width: 80%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+  height: 60%;
+}
+
+.cardC {
+  margin: 10px;
+  padding: 10px;
+  width: 20%;
+  height: 40%;
+}
+
+.cardC:hover {
+  background-color: rgb(88, 66, 66);
+}
+
+.comparable {
+  background-color: darkgray;
+  filter: brightness(0.5);
+}
+
+.movilDiv {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.inputContainer {
+  width: 50%;
+  background-color: black;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  opacity: 0.8;
+  border-radius: 7px;
+  color: white;
+}
+
+.paginator {
+  width: 25%;
+  border-radius: 7px;
+  border: 3px solid salmon;
+  justify-content: center;
+  display: flex;
+  box-shadow: rgba(255, 87, 51, 0.4) 0px 5px, rgba(255, 87, 51, 0.3) 0px 10px, rgba(255, 87, 51, 0.2) 0px 15px, rgba(255, 87, 51, 0.1) 0px 20px, rgba(255, 87, 51, 0.05) 0px 25px;
+}
+.container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.test{
+  display: none;
+}
+
+.cardC:hover .test{
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  align-content: center;
+  column-gap: 2em;
+}
+
+
+.mat-cart{
+  background-color: lightgreen;
+  color:darkslategray;
+}
+
+.mat-compare{
+  background-color: #284B63;
+  color:#FFFFFF;
+}
+
