@@ -57,9 +57,9 @@ export class ChartComponent implements OnInit {
   private recogerMoviles(){
     this.lista$=this.compararService.listaMoviles$.asObservable();
     this.lista$.subscribe((moviles:Movil[])=>{
-      this.movilService.getHistoricoPrecios(moviles[0].id).subscribe((historico:Historico[])=>{
+      this.movilService.getPriceHistory(moviles[0].id).subscribe((historico:Historico[])=>{
         this.historicos.push(historico)
-        this.movilService.getHistoricoPrecios(moviles[1].id).subscribe((historico:Historico[])=>{
+        this.movilService.getPriceHistory(moviles[1].id).subscribe((historico:Historico[])=>{
           this.historicos.push(historico)
           this.loadSaleData(moviles);
         })

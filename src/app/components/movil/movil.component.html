@@ -3,27 +3,29 @@
     <mat-form-field id="search" class="example-form-field" appearance="fill" class="inputContainer" color="warn">
       <mat-label>Marca/Modelo</mat-label>
       <input matInput type="text" #text
-      (keyup)="getBusqueda(text.value)" >
-      <button *ngIf="text.value" matSuffix mat-icon-button aria-label="Clear" (click)="text.value='';getBusqueda(text.value)">
+      (keyup)="getSearch(text.value)" >
+      <button *ngIf="text.value" matSuffix mat-icon-button aria-label="Clear" (click)="text.value='';getSearch(text.value)">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
   </div>
   <br />
-  <div *ngIf="lista">
+  <div>
     <div id="movilDiv" class="movilDiv">
       <mat-card id="{{ movil.id }}" class="cardC" (click)="onCardClick($event)" *ngFor="let movil of moviles">
         <mat-card-title>{{movil.marca}} {{movil.modelo}}</mat-card-title>
         <img mat-card-image src="https://i.blogs.es/cdf0c8/img_9077/450_1000.jpg">
         <mat-card-subtitle style="margin-bottom: 5px;">Precio: {{movil.precio}}€ RAM: {{movil.ram.memoria}}</mat-card-subtitle>
-        <mat-card-actions class="test">
+        <!--TODO: Footer card con botones de compra y nuevo sistema de comparación-->
+
+        <!-- <mat-card-actions class="test">
           <button mat-mini-fab color="cart" aria-label="Example icon button with a plus one icon">
             <mat-icon class="icon">add_shopping_cart_icon</mat-icon>
           </button>
           <button mat-mini-fab color="compare" aria-label="Example icon button with a plus one icon">
             <mat-icon>compare</mat-icon>
           </button>
-        </mat-card-actions>
+        </mat-card-actions> -->
       </mat-card>
     </div>
   </div>

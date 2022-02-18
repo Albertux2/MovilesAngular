@@ -2,11 +2,12 @@
   <mat-sidenav #desplegable mode="side" class="sidenav">
     <button
       (click)="comparable = !comparable"
+      [ngClass]="comparable ? 'notToggled' : 'toggled'"
       mat-flat-button
       color="accent"
       class="button"
     >
-      Activar comparación
+      {{comparable ? 'Desactivar comparación':'Activar comparación'}}
     </button>
     <form>
       <mat-divider class="divider"></mat-divider>

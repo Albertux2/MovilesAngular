@@ -12,41 +12,38 @@ import { CustomResponse } from 'src/model/CustomResponse';
 export class MovilService {
   private _filter!: Filter;
   private readonly apiUrl = 'http://localhost:8080';
-  private _listaFiltrados$!: Subject<CustomResponse>;
+  private _mobileList$!: Subject<CustomResponse>;
   
   constructor(private _http: HttpClient) {
-    this._listaFiltrados$ = new Subject();
+    this._mobileList$ = new Subject();
   }
 
-  async getMoviles(page?: number) {
+  getMobiles(page?: number) {
     let pageBase: number = 0;
     if (page != null) {
       pageBase = page;
     }
     let lista: any;
-    await this._http
-    .get(this.apiUrl + '/moviles/moviles?page=' + pageBase)
-    .forEach((stud) => {
-      lista = stud;
+    this._http
+    .get<CustomResponse>(this.apiUrl + '/moviles/moviles?page=' + pageBase)
+    .subscribe((stud) => {
+      this._mobileList$.next(stud);
     });
-    return lista;
   }
 
-  async getMovilesNombre(value: string, page?: number) {
+  getMobilesBySearch(value: string, page?: number) {
     let pageBase = 0;
     if (page != null) {
       pageBase = page;
     }
-    let lista: any;
-    await this._http
-    .get(this.apiUrl + '/moviles/nombre?value=' + value + '&page=' + pageBase)
-    .forEach((stud) => {
-        lista = stud;
+    this._http
+    .get<CustomResponse>(this.apiUrl + '/moviles/nombre?value=' + value + '&page=' + pageBase)
+    .subscribe((stud) => {
+        this._mobileList$.next(stud);
       });
-    return lista;
   }
   
-  getMovilesByIdList(ids: number[]): Observable<Movil[]> {
+  getMobilesByIdList(ids: number[]): Observable<Movil[]> {
     let moviles$ = <Observable<Movil[]>>(
       this.http.get<Movil[]>(
         this.apiUrl + '/moviles/idList?ids=' + ids.toString()
@@ -55,7 +52,7 @@ export class MovilService {
       return moviles$;
     }
 
-    getHistoricoPrecios(id: number): Observable<Historico[]> {
+    getPriceHistory(id: number): Observable<Historico[]> {
       let historicos$ = <Observable<Historico[]>>(
       this.http.get<Historico[]>(
         this.apiUrl + '/moviles/historico?id=' + id.toString()
@@ -76,7 +73,7 @@ export class MovilService {
     let body = JSON.parse(JSON.stringify(this.filter))
     this.http.post<CustomResponse>(this.apiUrl + '/moviles/filter?page='+pageBase+'&value='+searchValue,body)
     .subscribe((response:CustomResponse)=>{
-      this._listaFiltrados$.next(response);
+      this._mobileList$.next(response);
     })
   }
   
@@ -92,10 +89,10 @@ export class MovilService {
   public set filter(value: Filter) {
     this._filter = value;
   }
-  public get listaFiltrados$(): Subject<CustomResponse> {
-    return this._listaFiltrados$;
+  public get mobileList$(): Subject<CustomResponse> {
+    return this._mobileList$;
   }
-  public set listaFiltrados$(value: Subject<CustomResponse>) {
-    this._listaFiltrados$ = value;
+  public set mobileList$(value: Subject<CustomResponse>) {
+    this._mobileList$ = value;
   }
 }

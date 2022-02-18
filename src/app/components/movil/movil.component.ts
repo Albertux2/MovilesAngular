@@ -1,7 +1,4 @@
-import { JsonpClientBackend } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 import { MovilService } from 'src/app/service/movil.service';
 import { Movil } from '../../../model/movil';
 import { CompararComponent } from '../Comparar/Comparar.component';
@@ -20,9 +17,8 @@ export class MovilComponent implements OnInit {
   private _comparableId: number[] = [];
   private _pageNumber: number = 0;
   private _totalElementsPage: number = 0;
-  private _busqueda: string = '';
+  private _search: string = '';
 
-  lista!: any;
   moviles: Movil[] = [];
   constructor(
     private dialog: MatDialog,
@@ -31,42 +27,32 @@ export class MovilComponent implements OnInit {
     private filterService:FilterService
   ) {
     this.changeFiltered();
-    this.getFilteredMobiles();
+    this.getServiceMobiles();
+    this.getMobiles();
   }
 
-  ngOnInit() {
-    this.getMoviles();
-  }
-  getMoviles(page?: number) {
+  ngOnInit() {}
+
+  getMobiles(page?: number) {
     this.filtered = false;
     let pageBase = 0;
     if (page != null) {
       pageBase = page;
     }
-    this.lista = this.movilService.getMoviles(page);
-    this.lista.then((a: CustomResponse) => {
-      this.moviles = a.data.moviles.content as Movil[];
-      this.pageNumber = a.data.moviles.pageable.pageNumber;
-      this.totalElementsPage = a.data.moviles.totalElements;
-    });
+    this.movilService.getMobiles(pageBase);
   }
 
-  public getBusqueda(value: string, page?: number) {
+  public getSearch(value: string, page?: number) {
     this.filtered = false;
-    this._busqueda = value;
+    this._search = value;
     let pageBase = 0;
     if (page != null) {
       pageBase = page;
     }
-    if (this.busqueda.length > 0) {
-      this.lista = this.movilService.getMovilesNombre(this.busqueda, pageBase);
-      this.lista.then((a: CustomResponse) => {
-        this.moviles = a.data.moviles.content as Movil[];
-        this.pageNumber = a.data.moviles.pageable.pageNumber;
-        this.totalElementsPage = a.data.moviles.totalElements;
-      });
+    if (this.search.length > 0) {
+      this.movilService.getMobilesBySearch(this.search, pageBase);
     } else {
-      this.getMoviles(pageBase);
+      this.getMobiles(pageBase);
     }
   }
 
@@ -74,7 +60,7 @@ export class MovilComponent implements OnInit {
     let clickedElement: HTMLElement = event.target as HTMLElement;
     if (this.compareService.comparable && this.isCard(clickedElement)) {
       let clickedId: number = parseInt(clickedElement.id);
-      if (this.comprobarIdRepetida(clickedId)) {
+      if (this.checkIfIdIsRepeated(clickedId)) {
         this.comparableId.splice(this.comparableId.indexOf(clickedId), 1);
         clickedElement.classList.remove('comparable');
       } else {
@@ -111,13 +97,13 @@ export class MovilComponent implements OnInit {
     if(this.filtered){
       this.movilService.getFilteredMobiles(this.pageNumber)      
     }else{
-      this.getBusqueda(this.busqueda, this.pageNumber);
+      this.getSearch(this.search, this.pageNumber);
     }
   }
 
   public showDialog() {
     this.movilService
-      .getMovilesByIdList(this.comparableId)
+      .getMobilesByIdList(this.comparableId)
       .subscribe((moviles: Movil[]) => {
         this.dialog.open(CompararComponent, {
           width: '80vw',
@@ -143,15 +129,16 @@ export class MovilComponent implements OnInit {
     })
   }
 
-  public getFilteredMobiles(){
-    this.movilService.listaFiltrados$.asObservable().subscribe((response:CustomResponse)=>{
+  public getServiceMobiles(){
+    this.movilService.mobileList$.asObservable().subscribe((response:CustomResponse)=>{
+      console.log("test")
       this.moviles = response.data.moviles.content;
       this.pageNumber = response.data.moviles.pageable.pageNumber;
       this.totalElementsPage = response.data.moviles.totalElements;
     });
   }
 
-  public comprobarIdRepetida(id: number): boolean {
+  public checkIfIdIsRepeated(id: number): boolean {
     return this.comparableId.includes(id);
   }
 
@@ -168,11 +155,11 @@ export class MovilComponent implements OnInit {
   public set totalElementsPage(value: number) {
     this._totalElementsPage = value;
   }
-  public get busqueda(): string {
-    return this._busqueda;
+  public get search(): string {
+    return this._search;
   }
-  public set busqueda(value: string) {
-    this._busqueda = value;
+  public set search(value: string) {
+    this._search = value;
   }
   public get filtered(): boolean {
     return this._filtered;

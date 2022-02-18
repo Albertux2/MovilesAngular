@@ -25,3 +25,12 @@ input::-webkit-inner-spin-button {
   width:65%;
   white-space: normal;
 }
+
+.toggled{
+  background-color : rgba(89,225,44,0.8);
+  opacity: 0.8;
+}
+
+.notToggled{
+  background-color: #EE9423;
+}
