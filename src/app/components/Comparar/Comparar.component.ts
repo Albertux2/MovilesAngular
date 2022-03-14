@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { CompareService } from 'src/app/service/compare.service';
 import { MovilService } from 'src/app/service/movil.service';
-import { Movil } from 'src/model/movil';
+import { Movil } from 'src/app/model/movil';
 
 @Component({
   selector: 'app-Comparar',
@@ -17,7 +17,7 @@ export class CompararComponent implements OnInit {
     this.comparables = data.comparables;
     setTimeout(() => {
       this.compararService.addMoviles(this.comparables);
-    }, 0);
+    }, 100);
   }
 
   ngOnInit() {

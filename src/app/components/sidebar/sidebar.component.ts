@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { CompareService } from 'src/app/service/compare.service';
 import { FilterService } from 'src/app/service/filter.service';
 import { MovilService } from 'src/app/service/movil.service';
-import { Filter } from 'src/model/Filter';
-import { SliderConfig } from 'src/model/sliderConfig';
-import { Range } from 'src/model/Range';
+import { Filter } from 'src/app/model/Filter';
+import { SliderConfig } from 'src/app/model/sliderConfig';
+import { Range } from 'src/app/model/Range';
 
 @Component({
   selector: 'app-sidebar',

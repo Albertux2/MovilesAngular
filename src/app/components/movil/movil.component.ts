@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MovilService } from 'src/app/service/movil.service';
-import { Movil } from '../../../model/movil';
+import { Movil } from '../../model/movil';
 import { CompararComponent } from '../Comparar/Comparar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CompareService } from 'src/app/service/compare.service';
-import { CustomResponse } from 'src/model/CustomResponse';
+import { CustomResponse } from 'src/app/model/CustomResponse';
 import { FilterService } from 'src/app/service/filter.service';
+import { UserAuthenticationService } from 'src/app/service/UserAuthentication.service';
 
 @Component({
   selector: 'app-movil',
@@ -24,7 +25,8 @@ export class MovilComponent implements OnInit {
     private dialog: MatDialog,
     private movilService: MovilService,
     private compareService: CompareService,
-    private filterService:FilterService
+    private filterService:FilterService,
+    private authService:UserAuthenticationService
   ) {
     this.changeFiltered();
     this.getServiceMobiles();
@@ -69,7 +71,6 @@ export class MovilComponent implements OnInit {
       }
       if (this.comparableId.length == 2) {
         this.showDialog();
-        this.clearComparableArray();
       }
     }
   }
@@ -112,6 +113,11 @@ export class MovilComponent implements OnInit {
             comparables: moviles,
           },
         });
+        this.clearComparableArray();
+      },(err) => {
+        this.authService.refresh(err, () => {
+          this.showDialog();
+        });
       });
   }
 
@@ -131,7 +137,6 @@ export class MovilComponent implements OnInit {
 
   public getServiceMobiles(){
     this.movilService.mobileList$.asObservable().subscribe((response:CustomResponse)=>{
-      console.log("test")
       this.moviles = response.data.moviles.content;
       this.pageNumber = response.data.moviles.pageable.pageNumber;
       this.totalElementsPage = response.data.moviles.totalElements;

@@ -1,0 +1,17 @@
+.logBody{
+    width: 49%;
+    height: 100%;
+    margin: 1rem;
+    padding: 10px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.logButton{
+    width: 100%;
+    font-size: 18px;
+    background-color: #B8B8FF;
+}

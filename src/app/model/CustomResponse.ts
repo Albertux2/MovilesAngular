@@ -8,6 +8,7 @@ export interface CustomResponse {
   message: string;
   developerMessage: string;
   data: { moviles: Content};
+  error_message:any
 }
 
 export interface Content {

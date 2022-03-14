@@ -1,4 +1,4 @@
-import {Range} from 'src/model/Range'
+import {Range} from 'src/app/model/Range'
 export class Filter {
   constructor(
     private precioRange: Range,

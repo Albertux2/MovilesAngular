@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
-import { Movil } from 'src/model/movil';
+import { Movil } from 'src/app/model/movil';
 
 @Injectable({
   providedIn: 'root',

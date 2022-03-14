@@ -22,7 +22,9 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {ChartComponent} from 'src/app/components/chart/chart.component'
 import { NgxChartsModule }from '@swimlane/ngx-charts';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './components/login/login.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -33,8 +35,8 @@ import { FormsModule } from '@angular/forms';
     CompararComponent,
     NavBarComponent,
     SidebarComponent,
-    ChartComponent
-
+    ChartComponent,
+    LoginComponent
   ],
   imports: [
     FormsModule,
@@ -53,7 +55,10 @@ import { FormsModule } from '@angular/forms';
     NgxSliderModule,
     MatDividerModule,
     MatPaginatorModule,
-    NgxChartsModule
+    NgxChartsModule,
+    ReactiveFormsModule,
+    MatSnackBarModule
+    
   ],
   providers: [CompararComponent,ChartComponent,
   {provide: MAT_DIALOG_DATA,useValue:{}}

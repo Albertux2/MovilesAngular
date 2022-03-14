@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Movil } from 'src/model/movil';
+import { Movil } from 'src/app/model/movil';
 import { Observable, Subject } from 'rxjs';
-import { Historico } from 'src/model/Historico';
-import { Filter } from 'src/model/Filter';
-import { CustomResponse } from 'src/model/CustomResponse';
+import { Historico } from 'src/app/model/Historico';
+import { Filter } from 'src/app/model/Filter';
+import { CustomResponse } from 'src/app/model/CustomResponse';
+import { ResponseToken, UserAuthenticationService } from './UserAuthentication.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovilService {
+  
   private _filter!: Filter;
   private readonly apiUrl = 'http://localhost:8080';
   private _mobileList$!: Subject<CustomResponse>;
   
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient,private authService:UserAuthenticationService) {
     this._mobileList$ = new Subject();
   }
 
@@ -25,10 +27,14 @@ export class MovilService {
     }
     let lista: any;
     this._http
-    .get<CustomResponse>(this.apiUrl + '/moviles/moviles?page=' + pageBase)
+    .get<CustomResponse>(this.apiUrl + '/moviles/moviles?page=' + pageBase,this.authService.getTokenHeader())
     .subscribe((stud) => {
       this._mobileList$.next(stud);
-    });
+    },(err) => {
+      this.authService.refresh(err, () => {
+        this.getMobiles(pageBase);
+      });
+    })
   }
 
   getMobilesBySearch(value: string, page?: number) {
@@ -37,16 +43,20 @@ export class MovilService {
       pageBase = page;
     }
     this._http
-    .get<CustomResponse>(this.apiUrl + '/moviles/nombre?value=' + value + '&page=' + pageBase)
+    .get<CustomResponse>(this.apiUrl + '/moviles/nombre?value=' + value + '&page=' + pageBase,this.authService.getTokenHeader())
     .subscribe((stud) => {
         this._mobileList$.next(stud);
-      });
+      },(err) => {
+        this.authService.refresh(err, () => {
+          this.getMobilesBySearch(value,pageBase);
+        });
+      })
   }
   
   getMobilesByIdList(ids: number[]): Observable<Movil[]> {
     let moviles$ = <Observable<Movil[]>>(
       this.http.get<Movil[]>(
-        this.apiUrl + '/moviles/idList?ids=' + ids.toString()
+        this.apiUrl + '/moviles/idList?ids=' + ids.toString(),this.authService.getTokenHeader()
       )
       );
       return moviles$;
@@ -55,7 +65,7 @@ export class MovilService {
     getPriceHistory(id: number): Observable<Historico[]> {
       let historicos$ = <Observable<Historico[]>>(
       this.http.get<Historico[]>(
-        this.apiUrl + '/moviles/historico?id=' + id.toString()
+        this.apiUrl + '/moviles/historico?id=' + id.toString(),this.authService.getTokenHeader()
       )
       );
       return historicos$;
@@ -66,14 +76,18 @@ export class MovilService {
     if (page != null) {
       pageBase = page;
     }
-    let searchValue:String = new String()
+    let searchValue:string = ""
     if(value!=null){
       searchValue = value;
     }
     let body = JSON.parse(JSON.stringify(this.filter))
-    this.http.post<CustomResponse>(this.apiUrl + '/moviles/filter?page='+pageBase+'&value='+searchValue,body)
+    this.http.post<CustomResponse>(`${this.apiUrl}/moviles/filter?page=${pageBase}&value=${searchValue}`,body,this.authService.getTokenHeader())
     .subscribe((response:CustomResponse)=>{
       this._mobileList$.next(response);
+    },(err) => {
+      this.authService.refresh(err, () => {
+        this.getFilteredMobiles(pageBase,searchValue)
+      });
     })
   }
   

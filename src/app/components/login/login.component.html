@@ -1,0 +1,73 @@
+<div
+  style="
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <mat-card
+    style="background-color: #006672; height: 60%; width: 40%; padding: 35px"
+    [class.mat-elevation-z24]="true"
+  >
+    <mat-card-content style="height: 100%">
+      <div style="display: flex; width: 100%; height: 100%">
+        <form (ngSubmit)="login()" class="logBody" [formGroup]="loginControlForm.formGroup">
+          <h2>Iniciar sesión</h2>
+          <div *ngFor="let form of loginControlForm.formControls; let i = index">
+            <mat-form-field color="accent" appearance="fill">
+              <mat-label>{{ loginControlForm.nameFields[i] }}</mat-label>
+              <input
+                matInput
+                type="{{registerControlForm.inputType[i]}}"
+                placeholder="{{loginControlForm.nameFields[i]}}"
+                formControlName={{loginNombreControles[i]}}
+              />
+              <div style="margin-top: 10px;" *ngIf="loginControlForm.formControls[i].invalid && loginControlForm.getControl(loginNombreControles[i]).touched">
+                {{ loginForm.getErrorMessage(loginNombreControles[i]) }}
+              </div>
+            </mat-form-field>
+          </div>
+          <div>
+            <button type="submit" [disabled]="loginControlForm.formGroup.invalid" class="logButton" mat-button>
+              Iniciar sesion
+            </button>
+          </div>
+          <p style="opacity: 0">
+            <mat-form-field color="accent" appearance="fill">
+              <input matInput placeholder="Placeholder" disabled />
+            </mat-form-field>
+          </p>
+        </form>
+        <form class="logBody" [formGroup]="registerControlForm.formGroup">
+          <h2>Registrarse</h2>
+          <div *ngFor="let form of registerControlForm.formControls; let i = index">
+            <mat-form-field color="accent" appearance="fill">
+              <mat-label>{{ registerControlForm.nameFields[i] }}</mat-label>
+              <input
+                type="{{registerControlForm.inputType[i]}}"
+                matInput
+                placeholder="{{registerControlForm.nameFields[i]}}"
+                formControlName={{registerNombreControles[i]}}
+              />
+              <div style="margin-top: 10px;" *ngIf="registerControlForm.formControls[i].invalid && registerControlForm.getControl(registerNombreControles[i]).touched">
+                {{ registerForm.getErrorMessage(registerNombreControles[i]) }}
+              </div>
+            </mat-form-field>
+          </div>
+          <div>
+            <button [disabled]="registerControlForm.formGroup.invalid" class="logButton" (click)="signup()" mat-button>
+              Registrarse
+            </button>
+          </div>
+          <p style="opacity: 0">
+            <mat-form-field color="accent" appearance="fill">
+              <input matInput placeholder="Placeholder" disabled />
+            </mat-form-field>
+          </p>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
