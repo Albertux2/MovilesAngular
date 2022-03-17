@@ -15,9 +15,6 @@ export class UserAuthenticationService {
   private readonly refreshUrl = 'http://localhost:8080/user/refresh';
   private _logged: boolean = false;
   private _user!: User;
-  //Si el token ha expirado refresca el token y vuelve a ejecutar la función que falló
-  private _refresher = (error: any,reexecuteFunction:Function) => {
-  };
   constructor(private http: HttpClient, private router: Router,private snackBar: MatSnackBar
     ) {}
 
